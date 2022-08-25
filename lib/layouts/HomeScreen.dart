@@ -12,8 +12,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentindex = 0;
+  int currentIndex = 0;
    Database? database;
+
 
   List<Widget> Screens = [
     NewTaskScreen(),
@@ -22,7 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  initState(){
+    super.initState();
+    createDatabase();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       appBar: AppBar(
@@ -34,16 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Text("test"),
         ],
       ),
-      body: Screens[currentindex],
+      body: Screens[currentIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            var name = await getName();
-            print(name);
-          } catch (e) {
-            print("Error is ${e.toString()}");
-          };
-        },
+        onPressed: () {},
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -57,10 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (value) {
           setState(() {});
 
-          currentindex = value;
-          print(currentindex);
+          currentIndex = value;
+          print(currentIndex);
         },
-        currentIndex: currentindex,
+        currentIndex: currentIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.library_add), label: "New"),
           BottomNavigationBarItem(
@@ -71,18 +72,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<String> getName() async {
-    return "Hassan Emad";
-  }
+
 
   void createDatabase () async
   {
+    print("trying to create database and table...");
     var database =await openDatabase (
-      'todo.db',
+
+        'todo1.db',
       version: 1,
-      onCreate: (database1,version){
+
+      onCreate: (database1,version) async{
+        print("trying to create table...");
+       await database1.execute('CREATE TABLE Test3 (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
         print ("data base $database1 is created successfully with version = $version");
 
+      },
+      onOpen:(database) async{
+        print("data base $database is openned");
       }
 
 
@@ -92,11 +99,42 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+  void createDataBaseThen()  {
+    print("trying to create database...");
+  var database =openDatabase(
+      "TODO_DataBase2",
+    version: 1,
+    onCreate: (database,version){
+        print("trying to create Table...");
+        database.execute("CREATE TABLE TASKS2 (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)")
+            .then((value) =>
+        {
+        print("Table created "),
 
 
+        }).catchError((e){print("Error in creating table is "+e.toString());});
+    },
+    onOpen: (database1) async{
+      print("data base $database1 is openned");
+    },
 
 
+  ).then((value) =>
+  {
+    print("database created"),
+
+  }).catchError((e){print("Error in creating database is "+e.toString());});
   }
+
+
+}
+
+
+
+
+
+
+
 
 
 
