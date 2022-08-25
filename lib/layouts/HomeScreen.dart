@@ -13,8 +13,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
-   Database? database;
-
 
   List<Widget> Screens = [
     NewTaskScreen(),
@@ -25,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   initState(){
     super.initState();
-    createDatabase();
+
   }
 
   @override
@@ -44,9 +42,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Screens[currentIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+          });
+          print("floating");
+
+
+
+        },
         child: const Icon(Icons.add),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 30,
         selectedLabelStyle: const TextStyle(fontSize: 22),
@@ -74,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
+/*
   void createDatabase () async
   {
     print("trying to create database and table...");
@@ -84,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       onCreate: (database1,version) async{
         print("trying to create table...");
-       await database1.execute('CREATE TABLE Test3 (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)');
+       await database1.execute("CREATE TABLE TASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
         print ("data base $database1 is created successfully with version = $version");
 
       },
@@ -95,10 +102,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     );
 
+*/
 
   }
 
-
+/*
   void createDataBaseThen()  {
     print("trying to create database...");
   var database =openDatabase(
@@ -124,10 +132,29 @@ class _HomeScreenState extends State<HomeScreen> {
     print("database created"),
 
   }).catchError((e){print("Error in creating database is "+e.toString());});
-  }
+  }*/
+
+
+/*
+void databaseInsert (){
+
+  database?.transaction((txn) {
+    print("unserting .....");
+    return txn.rawInsert('INSERT INTO TASKS(TITLE,DATA,TIME,STATUS) VALUES("First task", "pray", "25-8-2022","idle")');
+  },
+  ).then((value) {print("data inserted successfully"); } ).catchError((eInsert){print("there is error in inserting data is*** "+eInsert.toString());});
 
 
 }
+
+*/
+
+
+
+
+
+
+
 
 
 

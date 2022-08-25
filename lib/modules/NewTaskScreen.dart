@@ -1,15 +1,79 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do_application/shared/componant/DataBaseClass.dart';
 //sws
 class NewTaskScreen extends StatelessWidget {
+
+  SqlDb dbObject = new SqlDb();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       body: Center(
-        child: Text(
-          "New Tasks",
-          style: TextStyle(fontSize: 60),
+        child: Column(
+          children:  [
+          const Text (
+              "New Tasks",
+              style: TextStyle(fontSize: 60),
+          ),
+            Container(
+              width: 100,
+              height: 100,
+              color: Colors.lightBlue,
+              child: IconButton(
+                iconSize: 40,
+                icon: Icon(Icons.add),
+                onPressed: () async{
+                  print("+ pressed");
+                 var responce= await dbObject.insertData(sqlCommand: 'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("First task", "pray", "25-8-2022","idle")');
+                 print("Data inserted to the table ");
+                  print(responce.toString());
+
+
+                 },
+
+              ),
+            ),
+            SizedBox(height: 10,),
+            Container(
+              width: 100,
+              height: 100,
+              color: Colors.lightBlue,
+              child: IconButton(
+                iconSize: 40,
+                icon: Icon(Icons.visibility),
+                onPressed: () async{
+                  print("view pressed");
+                  String sqlCommand="SELECT * FROM 'TASKS'";
+                  var responce = await dbObject.readData(sqlCommand: sqlCommand);
+                  print("$responce");
+
+
+                },
+
+              ),
+            ),
+            SizedBox(height: 10,),
+            Container(
+              width: 100,
+              height: 100,
+              color: Colors.lightBlue,
+              child: IconButton(
+                iconSize: 40,
+                icon: Icon(Icons.remove_circle),
+                onPressed: () async{
+                  print("delete pressed");
+                  String sqlCommand="DELETE FROM 'TASKS' WHERE id IN (7,8,9)";
+                  var responce=await dbObject.DeleteData(sqlCommand: sqlCommand);
+                  print(responce);
+
+
+                },
+
+              ),
+            ),
+          ],
         ),
       ),
     );
