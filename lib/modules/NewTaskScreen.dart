@@ -26,7 +26,10 @@ class NewTaskScreen extends StatelessWidget {
                 icon: Icon(Icons.add),
                 onPressed: () async{
                   print("+ pressed");
-                 var responce= await dbObject.insertData(sqlCommand: 'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("First task", "pray", "25-8-2022","idle")');
+
+                  String task="Java";
+                  String status="done";
+                 var responce= await dbObject.insertData(sqlCommand: 'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("$task", "pray", "25-8-2022","$status")');
                  print("Data inserted to the table ");
                   print(responce.toString());
 
@@ -35,7 +38,7 @@ class NewTaskScreen extends StatelessWidget {
 
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Container(
               width: 100,
               height: 100,
@@ -54,7 +57,7 @@ class NewTaskScreen extends StatelessWidget {
 
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             Container(
               width: 100,
               height: 100,
@@ -64,7 +67,7 @@ class NewTaskScreen extends StatelessWidget {
                 icon: Icon(Icons.remove_circle),
                 onPressed: () async{
                   print("delete pressed");
-                  String sqlCommand="DELETE FROM 'TASKS' WHERE id IN (7,8,9)";
+                  String sqlCommand="DELETE FROM 'TASKS' WHERE id IN (3,8,9,10)";
                   var responce=await dbObject.DeleteData(sqlCommand: sqlCommand);
                   print(responce);
 

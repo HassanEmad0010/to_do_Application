@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,6 +6,7 @@ import 'package:to_do_application/modules/DoneTaskScreen.dart';
 import 'package:to_do_application/modules/DraftTaskScreen.dart';
 
 import '../modules/NewTaskScreen.dart';
+import '../shared/componant/componant.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,6 +15,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
+  var scafofoldKey = GlobalKey<ScaffoldState>();
+  bool isFloatingPressed = false;
+  IconData floatingIcon = Icons.add;
+  var titleController=TextEditingController();
+  var timeController=TextEditingController();
+  var testController=TextEditingController();
+  var textFormKey=GlobalKey<FormState>();
 
   List<Widget> Screens = [
     NewTaskScreen(),
@@ -21,20 +30,18 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
-  initState(){
+  initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
+      key: scafofoldKey,
       appBar: AppBar(
         title: const Text("To do App"),
         leading: Icon(Icons.menu),
-        actions: [
+        actions: const [
           Icon(Icons.menu),
           Icon(Icons.menu),
           Text("test"),
@@ -43,16 +50,126 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Screens[currentIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-          });
-          print("floating");
+          setState(() {});
+
+          if (isFloatingPressed) {
+            Navigator.of(context).pop();
+            isFloatingPressed = false;
+            print("floating $isFloatingPressed");
+            setState(() {
+              floatingIcon = Icons.edit;
 
 
 
+
+            });
+
+
+
+          } else {
+
+
+            setState(() {
+              floatingIcon = Icons.add;
+            });
+            scafofoldKey.currentState?.showBottomSheet((context) {
+              isFloatingPressed = true;
+              print("floating $isFloatingPressed");
+              return
+                  Container(
+                    padding: EdgeInsets.all(19),
+                    color: Colors.grey[100],
+                    child: Form(
+                      key: textFormKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children:  [
+                          TextFormField(
+                            onTap: (){
+                              print("tet tabbed");
+
+                            },
+
+                            validator: (value){
+                              if (value ==null) {
+                                print("validator no null allowed $value");
+                              } else{return null;}
+
+                            },
+                            onChanged: (value){
+                              print("on changed $value");
+
+                            },
+
+                            decoration: const InputDecoration(
+
+                              border: OutlineInputBorder(gapPadding: 20),
+                              labelText: "test data",
+                              fillColor: Colors.black,
+                              //floatingLabelAlignment: FloatingLabelAlignment.center,
+                            ),
+
+                            controller: testController,
+
+
+                          ),
+
+
+
+                          textFormField(
+                            textEditingController: titleController,
+                            onTabFunction: (){
+                              titleController.text="test data";
+                              print("data tabbed");
+                            },
+                             validator: (String? value){},
+                            iconPrefix: Icons.text_snippet,
+
+                          ),
+                          SizedBox(height: 15,),
+                          textFormField(
+                            onTabFunction: () {
+                             showTimePicker(context: context, initialTime:TimeOfDay.now()).
+                            then((value) {
+                              if(value!=null) {
+                                timeController.text =
+                                    value.format(context).toString();
+                                print("value is $value");
+                              }
+                              else{return null;}
+                              setState(() {
+
+                              });
+
+                                });
+
+
+
+
+
+
+
+                            },
+
+                            formFieldText: "Time",
+                            iconPrefix: Icons.date_range_outlined,
+                            textEditingController: timeController,
+                            validator: (String? value){ },
+
+
+                          ),
+
+
+                      ],
+                      ),
+                    ),
+                  );
+
+            });
+          }
         },
-        child: const Icon(Icons.add),
+        child: Icon(floatingIcon),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 30,
         selectedLabelStyle: const TextStyle(fontSize: 22),
@@ -77,91 +194,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-
-
-/*
-  void createDatabase () async
-  {
-    print("trying to create database and table...");
-    var database =await openDatabase (
-
-        'todo1.db',
-      version: 1,
-
-      onCreate: (database1,version) async{
-        print("trying to create table...");
-       await database1.execute("CREATE TABLE TASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
-        print ("data base $database1 is created successfully with version = $version");
-
-      },
-      onOpen:(database) async{
-        print("data base $database is openned");
-      }
-
-
-    );
-
-*/
-
-  }
-
-/*
-  void createDataBaseThen()  {
-    print("trying to create database...");
-  var database =openDatabase(
-      "TODO_DataBase2",
-    version: 1,
-    onCreate: (database,version){
-        print("trying to create Table...");
-        database.execute("CREATE TABLE TASKS2 (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)")
-            .then((value) =>
-        {
-        print("Table created "),
-
-
-        }).catchError((e){print("Error in creating table is "+e.toString());});
-    },
-    onOpen: (database1) async{
-      print("data base $database1 is openned");
-    },
-
-
-  ).then((value) =>
-  {
-    print("database created"),
-
-  }).catchError((e){print("Error in creating database is "+e.toString());});
-  }*/
-
-
-/*
-void databaseInsert (){
-
-  database?.transaction((txn) {
-    print("unserting .....");
-    return txn.rawInsert('INSERT INTO TASKS(TITLE,DATA,TIME,STATUS) VALUES("First task", "pray", "25-8-2022","idle")');
-  },
-  ).then((value) {print("data inserted successfully"); } ).catchError((eInsert){print("there is error in inserting data is*** "+eInsert.toString());});
-
-
 }
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
