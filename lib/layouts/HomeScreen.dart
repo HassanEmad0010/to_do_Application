@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -18,10 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   var scafofoldKey = GlobalKey<ScaffoldState>();
   bool isFloatingPressed = false;
   IconData floatingIcon = Icons.add;
-  var titleController=TextEditingController();
-  var timeController=TextEditingController();
-  var testController=TextEditingController();
-  var textFormKey=GlobalKey<FormState>();
+  var titleController = TextEditingController();
+  var timeController = TextEditingController();
+  var testController = TextEditingController();
+  var textFormKey = GlobalKey<FormState>();
 
   List<Widget> Screens = [
     NewTaskScreen(),
@@ -58,113 +57,82 @@ class _HomeScreenState extends State<HomeScreen> {
             print("floating $isFloatingPressed");
             setState(() {
               floatingIcon = Icons.edit;
-
-
-
-
             });
-
-
-
           } else {
-
-
             setState(() {
               floatingIcon = Icons.add;
             });
             scafofoldKey.currentState?.showBottomSheet((context) {
               isFloatingPressed = true;
               print("floating $isFloatingPressed");
-              return
-                  Container(
-                    padding: EdgeInsets.all(19),
-                    color: Colors.grey[100],
-                    child: Form(
-                      key: textFormKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children:  [
-                          TextFormField(
-                            onTap: (){
-                              print("tet tabbed");
+              return Container(
+                padding: EdgeInsets.all(19),
+                color: Colors.grey[100],
+                child: Form(
+                  key: textFormKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
 
-                            },
-
-                            validator: (value){
-                              if (value ==null) {
-                                print("validator no null allowed $value");
-                              } else{return null;}
-
-                            },
-                            onChanged: (value){
-                              print("on changed $value");
-
-                            },
-
-                            decoration: const InputDecoration(
-
-                              border: OutlineInputBorder(gapPadding: 20),
-                              labelText: "test data",
-                              fillColor: Colors.black,
-                              //floatingLabelAlignment: FloatingLabelAlignment.center,
-                            ),
-
-                            controller: testController,
-
-
-                          ),
-
-
-
-                          textFormField(
-                            textEditingController: titleController,
-                            onTabFunction: (){
-                              titleController.text="test data";
-                              print("data tabbed");
-                            },
-                             validator: (String? value){},
-                            iconPrefix: Icons.text_snippet,
-
-                          ),
-                          SizedBox(height: 15,),
-                          textFormField(
-                            onTabFunction: () {
-                             showTimePicker(context: context, initialTime:TimeOfDay.now()).
-                            then((value) {
-                              if(value!=null) {
-                                timeController.text =
-                                    value.format(context).toString();
-                                print("value is $value");
-                              }
-                              else{return null;}
-                              setState(() {
-
-                              });
-
-                                });
-
-
-
-
-
-
-
-                            },
-
-                            formFieldText: "Time",
-                            iconPrefix: Icons.date_range_outlined,
-                            textEditingController: timeController,
-                            validator: (String? value){ },
-
-
-                          ),
-
-
-                      ],
+                      textFormField(
+                        textEditingController: titleController,
+                        onTabFunction: () {
+                          titleController.text = "test data";
+                          print("data tabbed");
+                        },
+                        validator: (String? value) {
+                          if(value==null || value.isEmpty)
+                            {
+                              return "Cant be empty";
+                            }
+                          return null;
+                        },
+                        iconPrefix: Icons.text_snippet,
                       ),
-                    ),
-                  );
+                     const SizedBox(
+                        height: 15,
+                      ),
+                      textFormField(
+                        textInputType: TextInputType.numberWithOptions(),
+                        onTabFunction: () {
+/*                          showTimePicker(
+                                  context: context,
+                                  initialTime: TimeOfDay.now())
+                              .then((value) {
+                            if (value != null) {
 
+
+                              timeController.text =
+                                  value.format(context).toString();
+                              print("value is $value");
+                            } else {
+                              return null;
+                            }
+                            setState(() {});
+                          });*/
+                        },
+                        formFieldText: "Time",
+                        iconPrefix: Icons.date_range_outlined,
+                        textEditingController: timeController,
+                        validator: (String? value) {},
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Validate returns true if the form is valid, or false otherwise.
+                          if (textFormKey.currentState!.validate()) {
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Processing Data')),
+                            );
+                          }
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             });
           }
         },
