@@ -30,8 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
   var dateController= TextEditingController();
   var textFormKey = GlobalKey<FormState>();
 
+ // late Future<List<Map<String, Object?>>> homeTasks;
+
+
+
   List<Widget> Screens = [
-    NewTaskScreen(),
+    NewTaskScreen( ),
     DoneTaskScreen(),
     DraftTaskScreen(),
   ];
@@ -66,7 +70,17 @@ class _HomeScreenState extends State<HomeScreen> {
               date: dateController.text,
               status: "idle",
               time: timeController.text,
-            );
+            ).then((value) {
+              setState(() {
+
+              });
+
+
+
+            });
+
+
+
             print("inserting from feilds " + responce.toString());
             Navigator.of(context).pop();
             isFloatingPressed = false;
@@ -177,16 +191,26 @@ class _HomeScreenState extends State<HomeScreen> {
                             timeController.text="";
                             dateController.text="";
 
-                            isFloatingPressed = false;
-                            floatingIcon=Icons.edit;
+                           // isFloatingPressed = false;
+                           // floatingIcon=Icons.edit;
 
-                            print(isFloatingPressed);
+                           // print(isFloatingPressed);
                           });
 
                         },
-                        child: const Text('close'),
+                        child: const Text('clear data'),
                       ),
-
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     setState(() {
+                      //
+                      //     //  print(homeTasks.toString());
+                      //
+                      //     });
+                      //
+                      //   },
+                      //   child: const Text('test'),
+                      // ),
 
                     ],
                   ),

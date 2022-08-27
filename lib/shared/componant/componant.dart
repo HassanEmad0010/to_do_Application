@@ -36,3 +36,33 @@ Widget textFormField({
         validator: validator,
       ),
     );
+
+Widget cardBuilder(
+{
+
+ //required AsyncSnapshot snapshot,
+  required String snapTitle,
+  Color color=Colors.lightBlue,
+  //required List<Map> getTasks,
+
+
+}
+    )
+
+{
+  return Container(
+
+    width: 100,
+    height: 80,
+    color: color,
+    child: Text(snapTitle),
+
+
+
+
+  );
+
+
+
+
+}
