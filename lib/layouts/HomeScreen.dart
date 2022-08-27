@@ -77,11 +77,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SnackBar(content: Text('Note Added')),
               );
             });
+
+            titleController.text="";
+            timeController.text="";
+            dateController.text="";
+
           } else {
             setState(() {
               floatingIcon = Icons.add;
             });
             scaffoldKey.currentState?.showBottomSheet(
+
+              elevation: 15,
               enableDrag: false,
 
                     (context) {
@@ -89,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               print("floating $isFloatingPressed");
               return Container(
                 padding: const EdgeInsets.all(19),
-                color: Colors.grey[100],
+                color: Colors.white,
                 child: Form(
                   key: textFormKey,
                   child: Column(
@@ -156,24 +163,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             print("Date is $dat");
                           }
 
-
-
                       });
                     },
-
-
-
-
                   ),
 
 
-                    /*   ElevatedButton(
+                      ElevatedButton(
                         onPressed: () {
-                         var xc =titleController.text;
-                            print("title cont = $xc");
+                          setState(() {
+                            titleController.text="";
+                            timeController.text="";
+                            dateController.text="";
+
+                            isFloatingPressed = false;
+                            floatingIcon=Icons.edit;
+                            Navigator.pop(context);
+                            print(isFloatingPressed);
+                          });
+
                         },
-                        child: const Text('Submit'),
-                      ),*/
+                        child: const Text('close'),
+                      ),
+
+
                     ],
                   ),
                 ),
