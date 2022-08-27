@@ -1,11 +1,15 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:to_do_application/modules/DoneTaskScreen.dart';
 import 'package:to_do_application/modules/DraftTaskScreen.dart';
 import 'package:to_do_application/shared/componant/DataBaseClass.dart';
+import 'package:intl/intl.dart';
+
+
 
 import '../modules/NewTaskScreen.dart';
 import '../shared/componant/componant.dart';
@@ -20,9 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   bool isFloatingPressed = false;
-  IconData floatingIcon = Icons.add;
+  IconData floatingIcon = Icons.edit;
   var titleController = TextEditingController();
   var timeController = TextEditingController();
+  var dateController= TextEditingController();
   var textFormKey = GlobalKey<FormState>();
 
   List<Widget> Screens = [
@@ -42,26 +47,25 @@ class _HomeScreenState extends State<HomeScreen> {
       key: scaffoldKey,
       appBar: AppBar(
         title: const Text("To do App"),
-        leading: Icon(Icons.menu),
+        leading: const Icon(Icons.task_alt),
+        iconTheme: IconThemeData(size: 35,),
         actions: const [
           Icon(Icons.menu),
-          Icon(Icons.menu),
-          Text("test"),
         ],
       ),
       body: Screens[currentIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: ()async {
           setState(() {});
 
           if (isFloatingPressed && (textFormKey.currentState!.validate())) {
             //'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("$task", "pray", "25-8-2022","$status")'
-            var responce = myDb.insertData(
+            var responce =await myDb.insertData(
               tableName: "TASKS",
               title: titleController.text,
-              date: timeController.text,
+              date: dateController.text,
               status: "idle",
-              time: DateTime.now().hour,
+              time: timeController.text,
             );
             print("inserting from feilds " + responce.toString());
             Navigator.of(context).pop();
@@ -77,11 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               floatingIcon = Icons.add;
             });
-            scaffoldKey.currentState?.showBottomSheet((context) {
+            scaffoldKey.currentState?.showBottomSheet(
+              enableDrag: false,
+
+                    (context) {
               isFloatingPressed = true;
               print("floating $isFloatingPressed");
               return Container(
-                padding: EdgeInsets.all(19),
+                padding: const EdgeInsets.all(19),
                 color: Colors.grey[100],
                 child: Form(
                   key: textFormKey,
@@ -89,13 +96,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       textFormField(
+                        formFieldText: "Task Title",
                         textEditingController: titleController,
                         onTabFunction: () {
-                          print("data tabbed");
+                          print("title tabbed");
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
-                            return "Cant be empty";
+                            return "title Cant be empty";
                           }
                           return null;
                         },
@@ -107,13 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       textFormField(
                         textInputType: TextInputType.numberWithOptions(),
                         onTabFunction: () {
-/*                          showTimePicker(
+                         showTimePicker(
                                   context: context,
                                   initialTime: TimeOfDay.now())
                               .then((value) {
                             if (value != null) {
-
-
                               timeController.text =
                                   value.format(context).toString();
                               print("value is $value");
@@ -121,15 +127,47 @@ class _HomeScreenState extends State<HomeScreen> {
                               return null;
                             }
                             setState(() {});
-                          });*/
+                          });
                         },
                         formFieldText: "Time",
-                        iconPrefix: Icons.date_range_outlined,
+                        iconPrefix: Icons.timer_outlined,
                         textEditingController: timeController,
                         validator: (String? value) {},
                       ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                  textFormField(
+                    textEditingController: dateController,
+                    formFieldText: "Date",
+                    iconPrefix: Icons.date_range_outlined,
+                    validator: (String? value) {  },
+                    onTabFunction: () {
+                       showDatePicker(context: context, initialDate: DateTime.now(),
+                          firstDate:DateTime.now(),
+                          lastDate:DateTime.utc(2022, 08, 30),
+                      ).then((value) {
+                        setState(() {
+                        });
+                        if (value!=null)
+                          {
+                           var dat= DateFormat.yMMMd().format(value);
+                            dateController.text=dat.toString();
+                            print("Date is $dat");
+                          }
 
-                      /*   ElevatedButton(
+
+
+                      });
+                    },
+
+
+
+
+                  ),
+
+
+                    /*   ElevatedButton(
                         onPressed: () {
                          var xc =titleController.text;
                             print("title cont = $xc");
@@ -145,6 +183,10 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: Icon(floatingIcon),
       ),
+
+
+
+
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 30,
         selectedLabelStyle: const TextStyle(fontSize: 22),

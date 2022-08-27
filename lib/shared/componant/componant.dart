@@ -30,6 +30,7 @@ Widget textFormField({
           fillColor: Colors.black,
           //floatingLabelAlignment: FloatingLabelAlignment.center,
         ),
+
         controller: textEditingController,
         keyboardType: textInputType,
         validator: validator,
