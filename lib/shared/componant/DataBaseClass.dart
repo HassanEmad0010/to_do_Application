@@ -34,7 +34,7 @@ class SqlDb {
     print("table created successfully");
   }
 
-  Future<List<Map<String, Object?>>> readData(
+  Future<List<Map>> readData(
       {required String sqlCommand}) async {
     print("trying to read data");
     Database? myDb = await db;

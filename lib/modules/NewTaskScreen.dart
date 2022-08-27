@@ -21,23 +21,27 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body:
         Container(
           //width: double.infinity,
-        //height:  600,
+        //height:  200,
         child:
            ListView(
+             scrollDirection: Axis.vertical,
+
          children: [
            FutureBuilder(
              future: dbObject.readData(sqlCommand: "SELECT * FROM 'TASKS'"),
-             builder: (context,AsyncSnapshot snapshot) {
+             builder: (context,AsyncSnapshot<List<Map>> snapshot) {
                if(snapshot.hasData) {
                  return ListView.builder(
-                 //  physics: never,
-                   shrinkWrap: true,
-                     itemCount: snapshot.data.length,
+                  // scrollDirection: Axis.vertical,
+
+                 physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                     itemCount: snapshot.data!.length,
                      itemBuilder:
                          (context, index) {
 
                        return cardBuilder(
-                           snapTitle: snapshot.data[index]['TITLE']);
+                           snapTitle: snapshot.data![index]['TITLE']);
                      }
 
                  );

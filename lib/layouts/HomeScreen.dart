@@ -237,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
         iconSize: 30,
         selectedLabelStyle: const TextStyle(fontSize: 22),
         selectedIconTheme: const IconThemeData(size: 40),
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         type: BottomNavigationBarType.fixed,
