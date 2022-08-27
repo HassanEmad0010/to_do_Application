@@ -88,8 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
             });
             scaffoldKey.currentState?.showBottomSheet(
 
+
               elevation: 15,
-              enableDrag: false,
+
+                //enableDrag: false,
 
                     (context) {
               isFloatingPressed = true;
@@ -177,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             isFloatingPressed = false;
                             floatingIcon=Icons.edit;
-                            Navigator.pop(context);
+
                             print(isFloatingPressed);
                           });
 
@@ -190,6 +192,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               );
+            }).closed.then((value) {
+              setState(() {
+                isFloatingPressed=false;
+                floatingIcon=Icons.edit;
+              });
+
+
+
             });
           }
         },
