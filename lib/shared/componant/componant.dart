@@ -42,8 +42,13 @@ Widget cardBuilder(
 
  //required AsyncSnapshot snapshot,
   required String snapTitle,
-  Color color=Colors.lightBlue,
-  //required List<Map> getTasks,
+  required String snapDate,
+  required String snapTime,
+  required String snapStatus,
+TextStyle textStyle= const TextStyle(color: Colors.white,fontSize: 16),
+ required Function() longPressFunction,
+
+Color color=Colors.teal,
 
 
 }
@@ -51,11 +56,34 @@ Widget cardBuilder(
 
 {
   return Container(
-
+    decoration: BoxDecoration(
+     // shape: BoxShape.circle,
+      border: Border.all(color: Colors.black,width: 4),
+   borderRadius: BorderRadius.all(Radius.circular(14.0),),
+   color: color,
+    ),
     width: 100,
     height: 80,
-    color: color,
-    child: Text(snapTitle),
+
+    child:
+      ListTile(
+
+        title: Text(snapDate,style: textStyle,),
+        leading: Text(snapTitle,style: textStyle),
+        subtitle: Text(snapTime,style: textStyle),
+      iconColor: Colors.red,
+        trailing: Text(snapStatus,style: textStyle),
+        onTap: (){
+        },
+
+        onLongPress: longPressFunction,
+
+        selectedTileColor: Colors.deepPurple,
+        selectedColor: Colors.red,
+      ),
+
+
+    //Text(snapTitle,style: TextStyle(color: Colors.white,fontSize: 20),),
 
 
 

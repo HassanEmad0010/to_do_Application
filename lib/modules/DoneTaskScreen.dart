@@ -18,21 +18,41 @@ class DoneTaskScreen extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Container(
-              width: 100,
-              height: 100,
-              color: Colors.lightBlue,
-              child: IconButton(
-                iconSize: 70,
-                icon: Icon(Icons.visibility),
-                onPressed: () async {
-                  print("view pressed");
-                  String sqlCommand = "SELECT * FROM 'TASKS'";
-                  var responce =
-                  await dbObject.readData(sqlCommand: sqlCommand);
-                  print("$responce");
-                },
-              ),
+            Column(
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.lightBlue,
+                  child: IconButton(
+                    iconSize: 70,
+                    icon: Icon(Icons.visibility),
+                    onPressed: () async {
+                      print("view pressed");
+                      String sqlCommand = "SELECT * FROM 'TASKS'";
+                      var responce =
+                      await dbObject.readData(sqlCommand: sqlCommand);
+                      print("$responce");
+                    },
+                  ),
+                ),
+                Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.deepPurple,
+                  child: IconButton(
+                    iconSize: 70,
+                    icon: Icon(Icons.visibility),
+                    onPressed: () async {
+                      print("view pressed");
+                      String sqlCommand = "SELECT * FROM 'DoneTASKS'";
+                      var responce =
+                      await dbObject.readData(sqlCommand: sqlCommand);
+                      print("$responce");
+                    },
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               width: 10,
@@ -47,9 +67,25 @@ class DoneTaskScreen extends StatelessWidget {
                 onPressed: () async {
                   print("delete pressed");
                   String sqlCommand ="Delete FROM 'TASKS'";
-                  var responce =
-                  await dbObject.DeleteData(sqlCommand: sqlCommand);
-                  print(responce);
+               //   var responce =
+                  //await dbObject.DeleteData(sqlCommand: sqlCommand);
+
+                //  print(responce);
+                },
+              ),
+            ),
+
+            Container(
+              width: 100,
+              height: 100,
+              color: Colors.lightBlue,
+              child: IconButton(
+                iconSize: 70,
+                icon: Icon(Icons.delete),
+                onPressed: ()  {
+
+                  dbObject.DeleteDataBase();
+
                 },
               ),
             ),

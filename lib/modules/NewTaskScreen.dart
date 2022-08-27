@@ -20,6 +20,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
 
       body:
         Container(
+          margin: EdgeInsets.all(24),
           //width: double.infinity,
         //height:  200,
         child:
@@ -31,8 +32,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
              future: dbObject.readData(sqlCommand: "SELECT * FROM 'TASKS'"),
              builder: (context,AsyncSnapshot<List<Map>> snapshot) {
                if(snapshot.hasData) {
-                 return ListView.builder(
-                  // scrollDirection: Axis.vertical,
+                 return ListView.separated(
+                  separatorBuilder: (context,value)=>SizedBox(height: 10,) ,
 
                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -41,7 +42,32 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                          (context, index) {
 
                        return cardBuilder(
-                           snapTitle: snapshot.data![index]['TITLE']);
+                           snapTitle: snapshot.data![index]['TITLE'],
+                         snapDate:  snapshot.data![index]['DATE'],
+                         snapStatus:  snapshot.data![index]['STATUS'],
+                         snapTime:  snapshot.data![index]['TIME'],
+                         longPressFunction: () async{
+                             print("long pressed");
+                             print("snap"+snapshot.toString());
+
+                            await dbObject.insertData(tableName: 'DoneTASKS',
+                                 title: snapshot.data![index]['TITLE'],
+                                 date: snapshot.data![index]['DATE'],
+                                 time: snapshot.data![index]['TIME'],
+                                 status:snapshot.data![index]['TIME'],
+                             );
+
+                            await dbObject.DeleteData(
+//I HAVE ISSUE HERE, need to access data with the uniqe id
+                              rowData: snapshot.data![index]['TITLE'],
+                               tableName:'TASKS' ,
+
+                             );
+
+                         }
+
+
+                       );
                      }
 
                  );

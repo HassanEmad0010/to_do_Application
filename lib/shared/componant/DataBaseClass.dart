@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class SqlDb {
+  String? DatabasePath;
   static Database? _db;
   Future<Database?> get db async {
     if (_db == null) {
@@ -15,11 +16,12 @@ class SqlDb {
   initialDatabase() async {
     String databaseName = 'LocalDataBase';
     String path = await getDatabasesPath();
+    DatabasePath=path;
     String databasePath = join(path, databaseName);
 
     var mydb = await openDatabase(
       databasePath,
-      version: 1,
+      version: 2,
       onCreate: _oncreateMethode,
     );
     print("DB created");
@@ -31,6 +33,9 @@ class SqlDb {
     //TITLE,DATA,TIME,STATUS
     await db.execute(
         "CREATE TABLE TASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
+    await db.execute(
+        "CREATE TABLE DoneTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
+
     print("table created successfully");
   }
 
@@ -58,19 +63,28 @@ class SqlDb {
     return response;
   }
 
-  Future<int> DeleteData({required String sqlCommand}) async {
+  Future<int> DeleteData({required String rowData,required String tableName}) async {
     print("trying to Delete data");
 
     Database? mydb = await db;
-    int responce = await mydb!.rawDelete(sqlCommand);
+    int responce = await mydb!.rawDelete('DELETE FROM $tableName WHERE TITLE = "$rowData"');
     return responce;
   }
 
-  Future<int> DeleteTable({required String sqlCommand}) async {
-    print("trying to Delete data");
+
+
+
+
+Future<void> DeleteDataBase() async {
+    print("trying to Delete database");
 
     Database? mydb = await db;
-    int responce = await mydb!.delete(sqlCommand);
-    return responce;
+     await deleteDatabase(DatabasePath!).then((value) {
+
+     }).catchError((e) {
+      print('Got error: $e');
+      return 42; // Future completes with 42.
+      });
+
   }
 }
