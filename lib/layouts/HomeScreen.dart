@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:to_do_application/modules/DoneTaskScreen.dart';
 import 'package:to_do_application/modules/DraftTaskScreen.dart';
+import 'package:to_do_application/shared/componant/DataBaseClass.dart';
 
 import '../modules/NewTaskScreen.dart';
 import '../shared/componant/componant.dart';
@@ -13,13 +16,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  SqlDb myDb = new SqlDb();
   int currentIndex = 0;
-  var scafofoldKey = GlobalKey<ScaffoldState>();
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   bool isFloatingPressed = false;
   IconData floatingIcon = Icons.add;
   var titleController = TextEditingController();
   var timeController = TextEditingController();
-  var testController = TextEditingController();
   var textFormKey = GlobalKey<FormState>();
 
   List<Widget> Screens = [
@@ -36,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scafofoldKey,
+      key: scaffoldKey,
       appBar: AppBar(
         title: const Text("To do App"),
         leading: Icon(Icons.menu),
@@ -51,18 +54,30 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           setState(() {});
 
-          if (isFloatingPressed) {
+          if (isFloatingPressed && (textFormKey.currentState!.validate())) {
+            //'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("$task", "pray", "25-8-2022","$status")'
+            var responce = myDb.insertData(
+              tableName: "TASKS",
+              title: titleController.text,
+              date: timeController.text,
+              status: "idle",
+              time: DateTime.now().hour,
+            );
+            print("inserting from feilds " + responce.toString());
             Navigator.of(context).pop();
             isFloatingPressed = false;
             print("floating $isFloatingPressed");
             setState(() {
               floatingIcon = Icons.edit;
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Note Added')),
+              );
             });
           } else {
             setState(() {
               floatingIcon = Icons.add;
             });
-            scafofoldKey.currentState?.showBottomSheet((context) {
+            scaffoldKey.currentState?.showBottomSheet((context) {
               isFloatingPressed = true;
               print("floating $isFloatingPressed");
               return Container(
@@ -73,23 +88,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-
                       textFormField(
                         textEditingController: titleController,
                         onTabFunction: () {
-                          titleController.text = "test data";
                           print("data tabbed");
                         },
                         validator: (String? value) {
-                          if(value==null || value.isEmpty)
-                            {
-                              return "Cant be empty";
-                            }
+                          if (value == null || value.isEmpty) {
+                            return "Cant be empty";
+                          }
                           return null;
                         },
                         iconPrefix: Icons.text_snippet,
                       ),
-                     const SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       textFormField(
@@ -116,19 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         textEditingController: timeController,
                         validator: (String? value) {},
                       ),
-                      ElevatedButton(
+
+                      /*   ElevatedButton(
                         onPressed: () {
-                          // Validate returns true if the form is valid, or false otherwise.
-                          if (textFormKey.currentState!.validate()) {
-                            // If the form is valid, display a snackbar. In the real world,
-                            // you'd often call a server or save the information in a database.
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Processing Data')),
-                            );
-                          }
+                         var xc =titleController.text;
+                            print("title cont = $xc");
                         },
                         child: const Text('Submit'),
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
