@@ -16,7 +16,7 @@ class SqlDb {
   initialDatabase() async {
     String databaseName = 'LocalDataBase';
     String path = await getDatabasesPath();
-    DatabasePath=path;
+    DatabasePath = path;
     String databasePath = join(path, databaseName);
 
     var mydb = await openDatabase(
@@ -33,13 +33,14 @@ class SqlDb {
   _oncreateMethode(Database db, int version) async {
     print("___________on Create");
 
-   // Batch().execute(sql)
+    // Batch().execute(sql)
     //TITLE,DATA,TIME,STATUS
     await db.execute(
         "CREATE TABLE TASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
     await db.execute(
         "CREATE TABLE DoneTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
-    await db.execute("CREATE TABLE DraftTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
+    await db.execute(
+        "CREATE TABLE DraftTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
   }
 /*
   _onUpgradeMethode( Database database, int oldVersion, int newVersion)
@@ -51,8 +52,7 @@ class SqlDb {
 
   }*/
 
-  Future<List<Map>> readData(
-      {required String sqlCommand}) async {
+  Future<List<Map>> readData({required String sqlCommand}) async {
     print("trying to read data");
     Database? myDb = await db;
     Future<List<Map<String, Object?>>> responce = myDb!.rawQuery(sqlCommand);
@@ -75,11 +75,13 @@ class SqlDb {
     return response;
   }
 
-  Future<int> DeleteData({required String rowData,required String tableName}) async {
+  Future<int> DeleteData(
+      {required String rowData, required String tableName}) async {
     print("trying to Delete data");
 
     Database? mydb = await db;
-    int responce = await mydb!.rawDelete('DELETE FROM $tableName WHERE TITLE = "$rowData"');
+    int responce = await mydb!
+        .rawDelete('DELETE FROM $tableName WHERE TITLE = "$rowData"');
     return responce;
   }
 
@@ -90,10 +92,6 @@ class SqlDb {
     int responce = await mydb!.rawDelete('DELETE FROM "$tableName"');
     return responce;
   }
-
-
-
-
 
 /*Future<void> DeleteDataBase() async {
     print("trying to Delete database");

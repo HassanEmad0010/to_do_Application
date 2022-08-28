@@ -1,7 +1,3 @@
-class DataModel {
+class DataModel {}
 
-
-
-}
-
-List<Map> tasks=[];
+List<Map> tasks = [];

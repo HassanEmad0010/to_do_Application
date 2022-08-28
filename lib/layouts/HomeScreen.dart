@@ -9,8 +9,6 @@ import 'package:to_do_application/modules/DraftTaskScreen.dart';
 import 'package:to_do_application/shared/componant/DataBaseClass.dart';
 import 'package:intl/intl.dart';
 
-
-
 import '../modules/NewTaskScreen.dart';
 import '../shared/componant/componant.dart';
 
@@ -27,15 +25,13 @@ class _HomeScreenState extends State<HomeScreen> {
   IconData floatingIcon = Icons.edit;
   var titleController = TextEditingController();
   var timeController = TextEditingController();
-  var dateController= TextEditingController();
+  var dateController = TextEditingController();
   var textFormKey = GlobalKey<FormState>();
 
- // late Future<List<Map<String, Object?>>> homeTasks;
-
-
+  // late Future<List<Map<String, Object?>>> homeTasks;
 
   List<Widget> Screens = [
-    NewTaskScreen( ),
+    NewTaskScreen(),
     DoneTaskScreen(),
     DraftTaskScreen(),
   ];
@@ -53,45 +49,45 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.blue,
         title: const Text("To do App"),
         leading: const Icon(Icons.task_alt),
-        iconTheme: IconThemeData(size: 35,),
-        actions:  [
+        iconTheme: IconThemeData(
+          size: 35,
+        ),
+        actions: [
           IconButton(
-            onPressed: ()async {
-
+              onPressed: () async {
                 print("delete pressed");
-              await myDb.DeleteTableData( tableName: 'TASKS',);
-                await myDb.DeleteTableData( tableName: 'DONETASKS',);
-                await myDb.DeleteTableData( tableName: 'DraftTASKS',);
-              setState(() {
-              });
-            },
+                await myDb.DeleteTableData(
+                  tableName: 'TASKS',
+                );
+                await myDb.DeleteTableData(
+                  tableName: 'DONETASKS',
+                );
+                await myDb.DeleteTableData(
+                  tableName: 'DraftTASKS',
+                );
+                setState(() {});
+              },
               icon: Icon(Icons.menu)),
         ],
       ),
       body: Screens[currentIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: ()async {
+        onPressed: () async {
           setState(() {});
 
           if (isFloatingPressed && (textFormKey.currentState!.validate())) {
-
             //'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("$task", "pray", "25-8-2022","$status")'
-            var responce =await myDb.insertData(
+            var responce = await myDb
+                .insertData(
               tableName: "TASKS",
               title: titleController.text,
               date: dateController.text,
               status: "idle",
               time: timeController.text,
-            ).then((value) {
-
+            )
+                .then((value) {
               setState(() {});
-
-
-
             });
-
-
-
 
             print("inserting from feilds " + responce.toString());
             Navigator.of(context).pop();
@@ -104,148 +100,136 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             });
 
-            titleController.text="";
-            timeController.text="";
-            dateController.text="";
-
+            titleController.text = "";
+            timeController.text = "";
+            dateController.text = "";
           } else {
             setState(() {
               floatingIcon = Icons.add;
             });
-            scaffoldKey.currentState?.showBottomSheet(
-              backgroundColor: Colors.black54,
+            scaffoldKey.currentState
+                ?.showBottomSheet(
+                    backgroundColor: Colors.black54, elevation: 15,
 
-
-              elevation: 15,
-
-                //enableDrag: false,
+                    //enableDrag: false,
 
                     (context) {
-              isFloatingPressed = true;
-              print("floating $isFloatingPressed");
-              return Container(
-                padding: const EdgeInsets.all(19),
-                color: Colors.white,
-                child: Form(
-                  key: textFormKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      textFormField(
-                        formFieldText: "Task Title",
-                        textEditingController: titleController,
-                        onTabFunction: () {
-                          print("title tabbed");
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return "title Cant be empty";
-                          }
-                          return null;
-                        },
-                        iconPrefix: Icons.text_snippet,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      textFormField(
-                        textInputType: TextInputType.numberWithOptions(),
-                        onTabFunction: () {
-                         showTimePicker(
-                                  context: context,
-                                  initialTime: TimeOfDay.now())
-                              .then((value) {
-                            if (value != null) {
-                              timeController.text =
-                                  value.format(context).toString();
-                              print("value is $value");
-                            } else {
+                  isFloatingPressed = true;
+                  print("floating $isFloatingPressed");
+                  return Container(
+                    padding: const EdgeInsets.all(19),
+                    color: Colors.white,
+                    child: Form(
+                      key: textFormKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          textFormField(
+                            formFieldText: "Task Title",
+                            textEditingController: titleController,
+                            onTabFunction: () {
+                              print("title tabbed");
+                            },
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return "title Cant be empty";
+                              }
                               return null;
-                            }
-                            setState(() {});
-                          });
-                        },
-                        formFieldText: "Time",
-                        iconPrefix: Icons.timer_outlined,
-                        textEditingController: timeController,
-                        validator: (String? value) {},
+                            },
+                            iconPrefix: Icons.text_snippet,
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          textFormField(
+                            textInputType: TextInputType.numberWithOptions(),
+                            onTabFunction: () {
+                              showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now())
+                                  .then((value) {
+                                if (value != null) {
+                                  timeController.text =
+                                      value.format(context).toString();
+                                  print("value is $value");
+                                } else {
+                                  return null;
+                                }
+                                setState(() {});
+                              });
+                            },
+                            formFieldText: "Time",
+                            iconPrefix: Icons.timer_outlined,
+                            textEditingController: timeController,
+                            validator: (String? value) {},
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          textFormField(
+                            textEditingController: dateController,
+                            formFieldText: "Date",
+                            iconPrefix: Icons.date_range_outlined,
+                            validator: (String? value) {},
+                            onTabFunction: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.utc(2022, 08, 30),
+                              ).then((value) {
+                                setState(() {});
+                                if (value != null) {
+                                  var dat = DateFormat.yMMMd().format(value);
+                                  dateController.text = dat.toString();
+                                  print("Date is $dat");
+                                }
+                              });
+                            },
+                          ),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                titleController.text = "";
+                                timeController.text = "";
+                                dateController.text = "";
+
+                                // isFloatingPressed = false;
+                                // floatingIcon=Icons.edit;
+
+                                // print(isFloatingPressed);
+                              });
+                            },
+                            child: const Text('clear data'),
+                          ),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     setState(() {
+                          //
+                          //     //  print(homeTasks.toString());
+                          //
+                          //     });
+                          //
+                          //   },
+                          //   child: const Text('test'),
+                          // ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                  textFormField(
-                    textEditingController: dateController,
-                    formFieldText: "Date",
-                    iconPrefix: Icons.date_range_outlined,
-                    validator: (String? value) {  },
-                    onTabFunction: () {
-                       showDatePicker(context: context, initialDate: DateTime.now(),
-                          firstDate:DateTime.now(),
-                          lastDate:DateTime.utc(2022, 08, 30),
-                      ).then((value) {
-                        setState(() {
-                        });
-                        if (value!=null)
-                          {
-                           var dat= DateFormat.yMMMd().format(value);
-                            dateController.text=dat.toString();
-                            print("Date is $dat");
-                          }
-
-                      });
-                    },
-                  ),
-
-
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            titleController.text="";
-                            timeController.text="";
-                            dateController.text="";
-
-                           // isFloatingPressed = false;
-                           // floatingIcon=Icons.edit;
-
-                           // print(isFloatingPressed);
-                          });
-
-                        },
-                        child: const Text('clear data'),
-                      ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     setState(() {
-                      //
-                      //     //  print(homeTasks.toString());
-                      //
-                      //     });
-                      //
-                      //   },
-                      //   child: const Text('test'),
-                      // ),
-
-                    ],
-                  ),
-                ),
-              );
-            }).closed.then((value) {
-              setState(() {
-                isFloatingPressed=false;
-                floatingIcon=Icons.edit;
-              });
-
-
-
-            });
+                    ),
+                  );
+                })
+                .closed
+                .then((value) {
+                  setState(() {
+                    isFloatingPressed = false;
+                    floatingIcon = Icons.edit;
+                  });
+                });
           }
         },
         child: Icon(floatingIcon),
       ),
-
-
-
-
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 30,
         selectedLabelStyle: const TextStyle(fontSize: 22),

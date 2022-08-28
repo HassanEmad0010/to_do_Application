@@ -21,10 +21,8 @@ Widget textFormField({
       width: width,
       height: height,
       child: TextFormField(
-
         onTap: onTabFunction,
         decoration: InputDecoration(
-
           border: const OutlineInputBorder(),
           prefix: Icon(iconPrefix),
           suffix: IconButton(onPressed: suffixFunction, icon: Icon(iconSuffix)),
@@ -32,69 +30,54 @@ Widget textFormField({
 
           //floatingLabelAlignment: FloatingLabelAlignment.center,
         ),
-
-
         controller: textEditingController,
         keyboardType: textInputType,
         validator: validator,
       ),
     );
 
-Widget cardBuilder(
-{
-
- //required AsyncSnapshot snapshot,
+Widget cardBuilder({
+  //required AsyncSnapshot snapshot,
   required String snapTitle,
   required String snapDate,
   required String snapTime,
   required String snapStatus,
-TextStyle textStyle= const TextStyle(color: Colors.white,fontSize: 15),
- required Function() longPressFunction,
-
-Color color=Colors.green,
-
-
-}
-    )
-
-{
+  TextStyle textStyle = const TextStyle(color: Colors.white, fontSize: 15),
+  required Function() longPressFunction,
+  Color color = Colors.green,
+}) {
   return Container(
     decoration: BoxDecoration(
-     // shape: BoxShape.circle,
-      border: Border.all(color: Colors.black,width: 4),
-   borderRadius: BorderRadius.all(Radius.circular(14.0),),
-   color: color,
+      // shape: BoxShape.circle,
+      border: Border.all(color: Colors.black, width: 4),
+      borderRadius: BorderRadius.all(
+        Radius.circular(14.0),
+      ),
+      color: color,
     ),
     width: 100,
     height: 80,
 
-    child:
-      ListTile(
-        /*textColor: Colors.teal,
+    child: ListTile(
+      /*textColor: Colors.teal,
         hoverColor: Colors.lightBlue,
         tileColor: Colors.red,*/
-selected: true,
-        title: Text(snapDate,style: textStyle,),
-        leading: Text(snapTitle,style: textStyle),
-        subtitle: Text(snapTime,style: textStyle),
-        trailing: Text(snapStatus,style: textStyle),
-        onTap:longPressFunction,
-
-        //onLongPress:
-
-        selectedTileColor: Colors.deepPurple,
-        selectedColor: Colors.red,
+      selected: true,
+      title: Text(
+        snapDate,
+        style: textStyle,
       ),
+      leading: Text(snapTitle, style: textStyle),
+      subtitle: Text(snapTime, style: textStyle),
+      trailing: Text(snapStatus, style: textStyle),
+      onTap: longPressFunction,
 
+      //onLongPress:
+
+      selectedTileColor: Colors.deepPurple,
+      selectedColor: Colors.red,
+    ),
 
     //Text(snapTitle,style: TextStyle(color: Colors.white,fontSize: 20),),
-
-
-
-
   );
-
-
-
-
 }

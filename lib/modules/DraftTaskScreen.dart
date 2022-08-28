@@ -5,72 +5,62 @@ import 'package:to_do_application/shared/componant/DataBaseClass.dart';
 import '../shared/componant/componant.dart';
 
 class DraftTaskScreen extends StatefulWidget {
-
   @override
   State<DraftTaskScreen> createState() => _DraftTaskScreenState();
 }
 
 class _DraftTaskScreenState extends State<DraftTaskScreen> {
-  SqlDb dbObject =SqlDb();
+  SqlDb dbObject = SqlDb();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.teal,
-
-
-      body:
-      Container(
+      backgroundColor: Colors.teal,
+      body: Container(
         margin: EdgeInsets.all(24),
         //width: double.infinity,
         //height:  200,
-        child:
-        ListView(
-
+        child: ListView(
           scrollDirection: Axis.vertical,
-
           children: [
-
             FutureBuilder(
-
-              future: dbObject.readData(sqlCommand: "SELECT * FROM 'DraftTASKS'"),
-              builder: (context,AsyncSnapshot<List<Map>> snapshot) {
-                if(snapshot.hasData) {
+              future:
+                  dbObject.readData(sqlCommand: "SELECT * FROM 'DraftTASKS'"),
+              builder: (context, AsyncSnapshot<List<Map>> snapshot) {
+                if (snapshot.hasData) {
                   return ListView.separated(
-                      separatorBuilder: (context,value)=>const SizedBox(height: 10,) ,
-
+                      separatorBuilder: (context, value) => const SizedBox(
+                            height: 10,
+                          ),
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
-                      itemBuilder:
-                          (context, index) {
-
-
+                      itemBuilder: (context, index) {
                         return cardBuilder(
                             snapTitle: snapshot.data![index]['TITLE'],
-                            snapDate:  snapshot.data![index]['DATE'],
-                            snapStatus:  snapshot.data![index]['STATUS'],
-                            snapTime:  snapshot.data![index]['TIME'],
-                            longPressFunction: () async{
-                              setState(() { });
+                            snapDate: snapshot.data![index]['DATE'],
+                            snapStatus: snapshot.data![index]['STATUS'],
+                            snapTime: snapshot.data![index]['TIME'],
+                            longPressFunction: () async {
+                              setState(() {});
                               print("long pressed");
-                              print("snap"+snapshot.toString());
+                              print("snap" + snapshot.toString());
 
-                              await dbObject.insertData(tableName: 'TASKS',
+                              await dbObject.insertData(
+                                tableName: 'TASKS',
                                 title: snapshot.data![index]['TITLE'],
                                 date: snapshot.data![index]['DATE'],
                                 time: snapshot.data![index]['TIME'],
-                                status:"idle",
+                                status: "idle",
                               );
 
-                             int resp= await dbObject.DeleteData(
+                              int resp = await dbObject.DeleteData(
 //I HAVE ISSUE HERE, need to access data with the uniqe id
                                 rowData: snapshot.data![index]['TITLE'],
-                                tableName:'DraftTASKS' ,
-
+                                tableName: 'DraftTASKS',
                               );
 
-                            /*  if(resp>0)
+                              /*  if(resp>0)
                               {
                                 print("navigation");
                                 Navigator.of(context).pushReplacement(
@@ -79,36 +69,26 @@ class _DraftTaskScreenState extends State<DraftTaskScreen> {
                                     )
                                 );
                               }*/
-
-                            }
-
-
-                        );
-                      }
-
-                  );
-                }else
-                {
-                  return const Center(child:  CircularProgressIndicator(color: Colors.red,value: 40),
+                            });
+                      });
+                } else {
+                  return const Center(
+                    child:
+                        CircularProgressIndicator(color: Colors.red, value: 40),
                     widthFactor: 50,
                     heightFactor: 40,
                   );
                 }
               },
-
             ),
           ],
         ),
-
       ),
-
-
     );
   }
 }
 
-class DraftScreen {
-}
+class DraftScreen {}
 /*Container(
               width: 100,
               height: 100,
@@ -126,4 +106,3 @@ class DraftScreen {
                 },
               ),
             ),*/
-
