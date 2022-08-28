@@ -50,11 +50,22 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: const Text("To do App"),
         leading: const Icon(Icons.task_alt),
         iconTheme: IconThemeData(size: 35,),
-        actions: const [
-          Icon(Icons.menu),
+        actions:  [
+          IconButton(
+            onPressed: ()async {
+
+                print("delete pressed");
+              await myDb.DeleteTableData( tableName: 'TASKS',);
+                await myDb.DeleteTableData( tableName: 'DONETASKS',);
+                await myDb.DeleteTableData( tableName: 'DraftTASKS',);
+              setState(() {
+              });
+            },
+              icon: Icon(Icons.menu)),
         ],
       ),
       body: Screens[currentIndex],
@@ -63,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {});
 
           if (isFloatingPressed && (textFormKey.currentState!.validate())) {
+
             //'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("$task", "pray", "25-8-2022","$status")'
             var responce =await myDb.insertData(
               tableName: "TASKS",
@@ -71,13 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
               status: "idle",
               time: timeController.text,
             ).then((value) {
-              setState(() {
 
-              });
+              setState(() {});
 
 
 
             });
+
 
 
 
@@ -101,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
               floatingIcon = Icons.add;
             });
             scaffoldKey.currentState?.showBottomSheet(
+              backgroundColor: Colors.black54,
 
 
               elevation: 15,
@@ -236,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 30,
         selectedLabelStyle: const TextStyle(fontSize: 22),
-        selectedIconTheme: const IconThemeData(size: 40),
+        selectedIconTheme: const IconThemeData(size: 30),
         backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,

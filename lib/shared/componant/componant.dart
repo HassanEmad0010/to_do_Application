@@ -21,15 +21,18 @@ Widget textFormField({
       width: width,
       height: height,
       child: TextFormField(
+
         onTap: onTabFunction,
         decoration: InputDecoration(
+
           border: const OutlineInputBorder(),
           prefix: Icon(iconPrefix),
           suffix: IconButton(onPressed: suffixFunction, icon: Icon(iconSuffix)),
           labelText: formFieldText,
-          fillColor: Colors.black,
+
           //floatingLabelAlignment: FloatingLabelAlignment.center,
         ),
+
 
         controller: textEditingController,
         keyboardType: textInputType,
@@ -48,7 +51,7 @@ Widget cardBuilder(
 TextStyle textStyle= const TextStyle(color: Colors.white,fontSize: 15),
  required Function() longPressFunction,
 
-Color color=Colors.teal,
+Color color=Colors.green,
 
 
 }
@@ -67,11 +70,13 @@ Color color=Colors.teal,
 
     child:
       ListTile(
-
+        /*textColor: Colors.teal,
+        hoverColor: Colors.lightBlue,
+        tileColor: Colors.red,*/
+selected: true,
         title: Text(snapDate,style: textStyle,),
         leading: Text(snapTitle,style: textStyle),
         subtitle: Text(snapTime,style: textStyle),
-      iconColor: Colors.red,
         trailing: Text(snapStatus,style: textStyle),
         onTap:longPressFunction,
 

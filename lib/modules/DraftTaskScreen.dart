@@ -16,6 +16,8 @@ class _DraftTaskScreenState extends State<DraftTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.teal,
+
 
       body:
       Container(
@@ -58,15 +60,25 @@ class _DraftTaskScreenState extends State<DraftTaskScreen> {
                                 title: snapshot.data![index]['TITLE'],
                                 date: snapshot.data![index]['DATE'],
                                 time: snapshot.data![index]['TIME'],
-                                status:snapshot.data![index]['TIME'],
+                                status:"idle",
                               );
 
-                              await dbObject.DeleteData(
+                             int resp= await dbObject.DeleteData(
 //I HAVE ISSUE HERE, need to access data with the uniqe id
                                 rowData: snapshot.data![index]['TITLE'],
                                 tableName:'DraftTASKS' ,
 
                               );
+
+                            /*  if(resp>0)
+                              {
+                                print("navigation");
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder:
+                                        (context)=>DraftTaskScreen(),
+                                    )
+                                );
+                              }*/
 
                             }
 
@@ -93,6 +105,9 @@ class _DraftTaskScreenState extends State<DraftTaskScreen> {
 
     );
   }
+}
+
+class DraftScreen {
 }
 /*Container(
               width: 100,

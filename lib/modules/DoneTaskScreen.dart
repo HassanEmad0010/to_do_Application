@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../layouts/HomeScreen.dart';
 import '../shared/componant/DataBaseClass.dart';
 import '../shared/componant/componant.dart';
 
@@ -15,6 +16,8 @@ class _DoneTaskScreenState extends State<DoneTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.teal,
+
       body:
       Container(
         margin: EdgeInsets.all(24),
@@ -52,15 +55,25 @@ class _DoneTaskScreenState extends State<DoneTaskScreen> {
                                 title: snapshot.data![index]['TITLE'],
                                 date: snapshot.data![index]['DATE'],
                                 time: snapshot.data![index]['TIME'],
-                                status:snapshot.data![index]['TIME'],
+                                status:"Draft",
                               );
 
-                              await dbObject.DeleteData(
+                              int resp= await dbObject.DeleteData(
 //I HAVE ISSUE HERE, need to access data with the uniqe id
                                 rowData: snapshot.data![index]['TITLE'],
-                                tableName:'TASKS' ,
+                                tableName:'DONETASKS' ,
 
                               );
+
+                             /* if(resp>0)
+                              {
+                                print("navigation");
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder:
+                                        (context)=>DoneTaskScreen(),
+                                    )
+                                );
+                              }*/
 
                             }
 

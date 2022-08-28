@@ -23,7 +23,7 @@ class SqlDb {
       databasePath,
       version: 5,
       onCreate: _oncreateMethode,
-      onUpgrade: _onUpgradeMethode,
+      //onUpgrade: _onUpgradeMethode,
     );
     print("DB created");
 
@@ -32,13 +32,16 @@ class SqlDb {
 
   _oncreateMethode(Database db, int version) async {
     print("___________on Create");
+
+   // Batch().execute(sql)
     //TITLE,DATA,TIME,STATUS
     await db.execute(
         "CREATE TABLE TASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
     await db.execute(
         "CREATE TABLE DoneTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
+    await db.execute("CREATE TABLE DraftTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
   }
-
+/*
   _onUpgradeMethode( Database database, int oldVersion, int newVersion)
   async {
     print("___________on upgrade");
@@ -46,7 +49,7 @@ class SqlDb {
     await database.execute("CREATE TABLE DraftTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
 
 
-  }
+  }*/
 
   Future<List<Map>> readData(
       {required String sqlCommand}) async {
@@ -80,11 +83,19 @@ class SqlDb {
     return responce;
   }
 
+  Future<int> DeleteTableData({required String tableName}) async {
+    print("trying to Delete data");
+
+    Database? mydb = await db;
+    int responce = await mydb!.rawDelete('DELETE FROM "$tableName"');
+    return responce;
+  }
 
 
 
 
-Future<void> DeleteDataBase() async {
+
+/*Future<void> DeleteDataBase() async {
     print("trying to Delete database");
 
     Database? mydb = await db;
@@ -95,5 +106,5 @@ Future<void> DeleteDataBase() async {
       return 42; // Future completes with 42.
       });
 
-  }
+  }*/
 }

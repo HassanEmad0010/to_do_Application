@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_application/models/DataModel.dart';
 import 'package:to_do_application/shared/componant/DataBaseClass.dart';
 
+import '../layouts/HomeScreen.dart';
 import '../shared/componant/componant.dart';
 
 //sws
@@ -19,10 +20,12 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:Colors.teal,
       key: newTaskScaffoldKey,
 
       body:
         Container(
+
           margin: EdgeInsets.all(24),
           //width: double.infinity,
         //height:  200,
@@ -50,7 +53,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                          snapStatus:  snapshot.data![index]['STATUS'],
                          snapTime:  snapshot.data![index]['TIME'],
                          longPressFunction: () async{
-                           newTaskScaffoldKey.currentState?.setState(() async {
+
 
                              print("long pressed");
                              print("snap"+snapshot.toString());
@@ -59,17 +62,26 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                                title: snapshot.data![index]['TITLE'],
                                date: snapshot.data![index]['DATE'],
                                time: snapshot.data![index]['TIME'],
-                               status:snapshot.data![index]['TIME'],
+                               status:"Done",
                              );
 
-                             await dbObject.DeleteData(
+                          int resp=   await dbObject.DeleteData(
 //I HAVE ISSUE HERE, need to access data with the uniqe id
                                rowData: snapshot.data![index]['TITLE'],
                                tableName:'TASKS' ,
-
                              );
 
-                           });
+                             if(resp>0)
+                             {
+                               print("navigation");
+                               Navigator.of(context).pushReplacement(
+                                   MaterialPageRoute(builder:
+                                       (context)=>HomeScreen(),
+                                   )
+                               );
+                             }
+
+
 
 
 
