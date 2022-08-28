@@ -45,7 +45,7 @@ Widget cardBuilder(
   required String snapDate,
   required String snapTime,
   required String snapStatus,
-TextStyle textStyle= const TextStyle(color: Colors.white,fontSize: 16),
+TextStyle textStyle= const TextStyle(color: Colors.white,fontSize: 15),
  required Function() longPressFunction,
 
 Color color=Colors.teal,
@@ -73,10 +73,9 @@ Color color=Colors.teal,
         subtitle: Text(snapTime,style: textStyle),
       iconColor: Colors.red,
         trailing: Text(snapStatus,style: textStyle),
-        onTap: (){
-        },
+        onTap:longPressFunction,
 
-        onLongPress: longPressFunction,
+        //onLongPress:
 
         selectedTileColor: Colors.deepPurple,
         selectedColor: Colors.red,

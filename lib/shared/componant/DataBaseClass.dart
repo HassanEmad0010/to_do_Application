@@ -21,8 +21,9 @@ class SqlDb {
 
     var mydb = await openDatabase(
       databasePath,
-      version: 2,
+      version: 5,
       onCreate: _oncreateMethode,
+      onUpgrade: _onUpgradeMethode,
     );
     print("DB created");
 
@@ -30,13 +31,21 @@ class SqlDb {
   }
 
   _oncreateMethode(Database db, int version) async {
+    print("___________on Create");
     //TITLE,DATA,TIME,STATUS
     await db.execute(
         "CREATE TABLE TASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
     await db.execute(
         "CREATE TABLE DoneTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
+  }
 
-    print("table created successfully");
+  _onUpgradeMethode( Database database, int oldVersion, int newVersion)
+  async {
+    print("___________on upgrade");
+
+    await database.execute("CREATE TABLE DraftTASKS (id INTEGER PRIMARY KEY, TITLE TEXT, DATE TEXT, TIME STRING, STATUS STRING)");
+
+
   }
 
   Future<List<Map>> readData(

@@ -13,10 +13,13 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   SqlDb dbObject = new SqlDb();
+  var newTaskScaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: newTaskScaffoldKey,
 
       body:
         Container(
@@ -47,22 +50,28 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                          snapStatus:  snapshot.data![index]['STATUS'],
                          snapTime:  snapshot.data![index]['TIME'],
                          longPressFunction: () async{
+                           newTaskScaffoldKey.currentState?.setState(() async {
+
                              print("long pressed");
                              print("snap"+snapshot.toString());
 
-                            await dbObject.insertData(tableName: 'DoneTASKS',
-                                 title: snapshot.data![index]['TITLE'],
-                                 date: snapshot.data![index]['DATE'],
-                                 time: snapshot.data![index]['TIME'],
-                                 status:snapshot.data![index]['TIME'],
+                             await dbObject.insertData(tableName: 'DoneTASKS',
+                               title: snapshot.data![index]['TITLE'],
+                               date: snapshot.data![index]['DATE'],
+                               time: snapshot.data![index]['TIME'],
+                               status:snapshot.data![index]['TIME'],
                              );
 
-                            await dbObject.DeleteData(
+                             await dbObject.DeleteData(
 //I HAVE ISSUE HERE, need to access data with the uniqe id
-                              rowData: snapshot.data![index]['TITLE'],
+                               rowData: snapshot.data![index]['TITLE'],
                                tableName:'TASKS' ,
 
                              );
+
+                           });
+
+
 
                          }
 

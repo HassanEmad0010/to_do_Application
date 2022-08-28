@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 import '../shared/componant/DataBaseClass.dart';
 import '../shared/componant/componant.dart';
 
-class DoneTaskScreen extends StatelessWidget {
+class DoneTaskScreen extends StatefulWidget {
+  @override
+  State<DoneTaskScreen> createState() => _DoneTaskScreenState();
+}
+
+class _DoneTaskScreenState extends State<DoneTaskScreen> {
   SqlDb dbObject = new SqlDb();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +44,7 @@ class DoneTaskScreen extends StatelessWidget {
                             snapStatus:  snapshot.data![index]['STATUS'],
                             snapTime:  snapshot.data![index]['TIME'],
                             longPressFunction: () async{
+                              setState(() { });
                               print("long pressed");
                               print("snap"+snapshot.toString());
 
