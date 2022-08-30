@@ -12,6 +12,7 @@ class NewTaskScreen extends StatefulWidget {
   State<NewTaskScreen> createState() => _NewTaskScreenState();
 }
 
+
 class _NewTaskScreenState extends State<NewTaskScreen> {
   SqlDb dbObject = new SqlDb();
   var newTaskScaffoldKey = GlobalKey<ScaffoldState>();
