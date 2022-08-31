@@ -32,9 +32,7 @@ class HomeScreen extends StatelessWidget {
       create: (context) => AppCubit(),
       child: BlocConsumer<AppCubit, AppState>(
         listener: (context, state) {
-          if (state is ChangingState) {
-            print("changing state");
-          }
+          if (state is ChangingState) {}
         },
         builder: (context, state) {
           //this object to make acsess easy
@@ -46,7 +44,7 @@ class HomeScreen extends StatelessWidget {
               backgroundColor: Colors.blue,
               title: const Text("To do App"),
               leading: const Icon(Icons.task_alt),
-              iconTheme: IconThemeData(
+              iconTheme: const IconThemeData(
                 size: 35,
               ),
               actions: [
@@ -72,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                   cubitObject.Screens[cubitObject.currentIndex],
               condition: cubitObject.notLoading,
               fallback: (context) => const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: Colors.yellow),
               ),
             ),
             floatingActionButton: FloatingActionButton(
@@ -81,7 +79,8 @@ class HomeScreen extends StatelessWidget {
                     (textFormKey.currentState!.validate())) {
                   //cubitObject.isFloatingPressed = false;
                   //cubitObject.floatingIcon = Icons.edit;
-                  cubitObject.floatingButton(iConData:Icons.edit ,notPressed: false);
+                  cubitObject.floatingButton(
+                      iConData: Icons.edit, notPressed: false);
 
                   //'INSERT INTO TASKS(TITLE,DATE,TIME,STATUS) VALUES("$task", "pray", "25-8-2022","$status")'
 
@@ -98,6 +97,9 @@ class HomeScreen extends StatelessWidget {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Note Added')));
+                  }).catchError((e) {
+                    print("Exception Error in insert methode in Home Screen: " +
+                        e.toString());
                   });
 
                   titleController.text = "";
@@ -105,14 +107,13 @@ class HomeScreen extends StatelessWidget {
                   dateController.text = "";
                 } else {
                   //cubitObject.floatingIcon = Icons.add;
-                 // cubitObject.isFloatingPressed = true;
-                  cubitObject.floatingButton(iConData:Icons.add ,notPressed: true);
+                  // cubitObject.isFloatingPressed = true;
+                  cubitObject.floatingButton(
+                      iConData: Icons.add, notPressed: true);
                   scaffoldKey.currentState
                       ?.showBottomSheet(
                           backgroundColor: Colors.black54,
                           elevation: 15, (context) {
-
-                        print("floating $cubitObject.isFloatingPressed");
                         return Container(
                           padding: const EdgeInsets.all(19),
                           color: Colors.white,
@@ -216,7 +217,8 @@ class HomeScreen extends StatelessWidget {
                       })
                       .closed
                       .then((value) {
-                        cubitObject.floatingButton(iConData:Icons.edit , notPressed: false);
+                        cubitObject.floatingButton(
+                            iConData: Icons.edit, notPressed: false);
                         //cubitObject.isFloatingPressed = false;
                         //cubitObject.floatingIcon = Icons.edit;
                       });

@@ -93,6 +93,16 @@ class SqlDb {
     return responce;
   }
 
+  void closeDataBase() async {
+    Database? mydb = await db;
+    await mydb!.close();
+  }
+
+  void openDataBase() async {
+    Database? mydb = await db;
+    await mydb!.isOpen;
+  }
+
 /*Future<void> DeleteDataBase() async {
     print("trying to Delete database");
 
