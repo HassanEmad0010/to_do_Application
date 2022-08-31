@@ -22,7 +22,7 @@ class NewTaskScreen extends StatelessWidget {
       builder: (context, state) {
         AppCubit cubitObject = AppCubit.get(context);
         return Scaffold(
-          backgroundColor: Colors.teal,
+          backgroundColor: Colors.indigo,
           key: newTaskScaffoldKey,
           body: Container(
             margin: EdgeInsets.all(24),

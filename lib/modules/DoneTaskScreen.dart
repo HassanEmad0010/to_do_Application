@@ -17,7 +17,7 @@ class DoneTaskScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) => Scaffold(
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.indigo,
         body: Container(
           margin: EdgeInsets.all(24),
           //width: double.infinity,

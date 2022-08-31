@@ -48,21 +48,11 @@ class HomeScreen extends StatelessWidget {
                 size: 35,
               ),
               actions: [
-                /*IconButton(
+                IconButton(
                   onPressed: () async {
-                    print("delete pressed");
-                    await myDb.DeleteTableData(
-                      tableName: 'TASKS',
-                    );
-                    await myDb.DeleteTableData(
-                      tableName: 'DONETASKS',
-                    );
-                    await myDb.DeleteTableData(
-                      tableName: 'DraftTASKS',
-                    );
-
+                    cubitObject.deleteAllTables();
                   },
-                  icon: Icon(Icons.menu)),*/
+                  icon: Icon(Icons.highlight_remove_outlined)),
               ],
             ),
             body: ConditionalBuilder(
@@ -96,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                     print("floating $cubitObject.isFloatingPressed");
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Note Added')));
+                        const SnackBar(content: Text('Task Added')));
                   }).catchError((e) {
                     print("Exception Error in insert methode in Home Screen: " +
                         e.toString());
@@ -116,13 +106,14 @@ class HomeScreen extends StatelessWidget {
                           elevation: 15, (context) {
                         return Container(
                           padding: const EdgeInsets.all(19),
-                          color: Colors.white,
+                          color: Colors.indigo,
                           child: Form(
                             key: textFormKey,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 textFormField(
+                                  //color: Colors.white,
                                   formFieldText: "Task Title",
                                   textEditingController: titleController,
                                   onTabFunction: () {

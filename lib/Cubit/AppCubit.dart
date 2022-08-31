@@ -32,6 +32,12 @@ class AppCubit extends Cubit<AppState> {
     notLoading = true;
   }
 
+  void floatingButton({required IconData iConData, required bool notPressed}) {
+    isFloatingPressed = notPressed;
+    floatingIcon = iConData;
+    emit(FloatingButtonState());
+  }
+
   Future<List<Map<String, Object?>>> insertNewTask({
     required String title,
     required String date,
@@ -54,11 +60,6 @@ class AppCubit extends Cubit<AppState> {
     return responce;
   }
 
-  void floatingButton({required IconData iConData, required bool notPressed}) {
-    isFloatingPressed = notPressed;
-    floatingIcon = iConData;
-    emit(FloatingButtonState());
-  }
 
   Future<List<Map>> readTasksData({required String tableName}) async {
     var res = await myDb.readData(sqlCommand: "SELECT * FROM '$tableName'");
@@ -74,4 +75,40 @@ class AppCubit extends Cubit<AppState> {
     );
     emit(DeleteDatabaseState());
   }
+
+
+void deleteAllTables () async
+{
+  if (currentIndex ==0){
+
+    print("delete pressed");
+    await myDb.DeleteTableData(
+      tableName: 'TASKS',
+    );
+  }
+
+  else if (currentIndex ==1){
+
+    print("delete pressed");
+    await myDb.DeleteTableData(
+      tableName: 'DONETASKS',
+    );
+  }
+
+
+  else if (currentIndex ==2){
+
+    print("delete pressed");
+    await myDb.DeleteTableData(
+      tableName: 'DraftTASKS',
+    );
+  }
+
+
+
+
+
+
+}
+
 }

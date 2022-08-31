@@ -7,7 +7,7 @@ import 'package:to_do_application/shared/BlocObserver.dart';
 import 'layouts/HomeScreen.dart';
 
 void main() {
-  Bloc.observer = MyBlocObserver();
+ // Bloc.observer = MyBlocObserver();
 
   runApp(MyApp());
 }
